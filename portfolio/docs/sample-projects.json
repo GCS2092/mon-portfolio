@@ -1,0 +1,43 @@
+[
+  {
+    "id": 999001,
+    "slug": "demo-dashboard",
+    "title": "Demo Dashboard",
+    "year": "2026",
+    "status": "En production",
+    "link": "https://example.com",
+    "tags": ["React", "TypeScript", "Tailwind"],
+    "shortDescription": "Un dashboard responsive pour démontrer le rendu sur mobile/desktop.",
+    "fullDescription": "Ce projet est un exemple importé via JSON depuis l'admin. Il sert à vérifier l'affichage des cards, du détail et de l'architecture.",
+    "architecture": {
+      "description": "Architecture simplifiée",
+      "diagram": "flowchart TD\n  UI[React UI] --> API[/api/projects]\n  API --> DB[(Neon Postgres)]\n"
+    },
+    "stack": [
+      {
+        "name": "React",
+        "role": "UI",
+        "color": "#61DAFB",
+        "description": "Rendu des pages et composants.",
+        "how": "Composants + Router.",
+        "importance": "Haute"
+      },
+      {
+        "name": "Tailwind",
+        "role": "Styles",
+        "color": "#38BDF8",
+        "description": "Design system utilitaire.",
+        "how": "Classes responsive (sm/md/lg).",
+        "importance": "Haute"
+      },
+      {
+        "name": "Vercel Functions",
+        "role": "API",
+        "color": "#111827",
+        "description": "CRUD serverless.",
+        "how": "Routes /api.*",
+        "importance": "Moyenne"
+      }
+    ]
+  }
+]

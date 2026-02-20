@@ -3,63 +3,122 @@ export const projects = [
     id: 1,
     slug: "basketblog",
     title: "BasketBlog",
+
     shortDescription:
-      "Blog full-stack dédié au basket-ball — articles, catégories, tags, auteurs et expérience PWA installable sur mobile.",
+      "Blog basket full-stack avec CMS headless, API REST et application installable sur mobile (PWA).",
+
     fullDescription:
-      "BasketBlog est une plateforme de blog moderne construite autour d'une architecture découplée (headless). Le frontend Next.js consomme une API REST fournie par Strapi, un CMS headless qui permet aux rédacteurs de publier du contenu sans toucher au code. La base de données PostgreSQL stocke l'ensemble des données. Le site est également une PWA : il peut être installé sur mobile ou desktop comme une application native.",
-    tags: ["Next.js", "Strapi", "PostgreSQL", "Tailwind CSS", "PWA", "TypeScript"],
-    link: "https://ton-basketblog.vercel.app",
+      "BasketBlog est un blog moderne dédié au basket-ball construit avec une architecture headless. Les rédacteurs publient le contenu via Strapi, un CMS headless qui stocke les données dans PostgreSQL et expose automatiquement une API REST. Le frontend Next.js consomme cette API pour afficher les articles, catégories, tags et auteurs. Le site est responsive et fonctionne comme une Progressive Web App, pouvant être installée sur mobile ou desktop.",
+
+    tags: [
+      "Next.js",
+      "Strapi",
+      "PostgreSQL",
+      "Tailwind CSS",
+      "TypeScript",
+      "PWA",
+    ],
+
+    link: "https://basket-blog-seven.vercel.app",
     year: "2025",
     status: "En production",
+
+    // ⭐ NOUVEAU : Schéma d’architecture
+    architecture: {
+      description:
+        "Architecture headless : le frontend Next.js consomme une API REST fournie par Strapi, qui interagit avec PostgreSQL pour stocker et récupérer les données.",
+
+      diagram: `
+flowchart TD
+  User[Utilisateur / Mobile PWA]
+  Frontend[Frontend — Next.js]
+  API[Backend — Strapi API REST]
+  DB[(Base de données — PostgreSQL)]
+  Admin[Rédacteur — Strapi Admin]
+
+  User --> Frontend
+  Frontend --> API
+  API --> DB
+  DB --> API
+  API --> Frontend
+  Frontend --> User
+
+  Admin --> API
+`,
+    },
+
     stack: [
       {
         name: "Next.js",
         role: "Frontend",
         color: "#000000",
         description:
-          "Framework React qui gère le rendu des pages côté serveur (SSR) et la génération statique (SSG). Il s'occupe du routing, des métadonnées SEO, du manifeste PWA et de l'optimisation des images.",
-        how: "Le frontend envoie des requêtes HTTP vers l'API Strapi pour obtenir les articles, catégories et auteurs, puis les affiche sous forme de pages React.",
+          "Framework React utilisé pour construire l’interface utilisateur, gérer le routing, le SEO et le rendu (SSR/SSG).",
+        how:
+          "Le frontend appelle l’API REST de Strapi pour récupérer les données du blog et générer les pages.",
+        importance:
+          "Point d’entrée utilisateur : sans le frontend, aucune interface ni accès au contenu.",
       },
+
       {
         name: "Strapi",
-        role: "Backend / CMS",
+        role: "Backend / CMS headless",
         color: "#4945FF",
         description:
-          "CMS headless Node.js qui expose une API REST automatiquement générée à partir des types de contenu définis (Article, Category, Tag, Author). Les rédacteurs gèrent tout le contenu depuis son interface sans écrire de code.",
-        how: "Strapi reçoit les requêtes de Next.js, interroge PostgreSQL, et retourne les données en JSON. Il gère aussi les permissions et le système de draft & publish.",
+          "CMS headless Node.js permettant aux rédacteurs de gérer le contenu via une interface graphique.",
+        how:
+          "Expose automatiquement une API REST et communique avec PostgreSQL.",
+        importance:
+          "Cœur du système : gère le contenu, les permissions et la logique métier.",
       },
+
       {
         name: "PostgreSQL",
         role: "Base de données",
         color: "#336791",
         description:
-          "Base de données relationnelle robuste qui stocke toutes les données du blog : articles, auteurs, catégories, tags et leurs relations. Strapi s'en occupe entièrement.",
-        how: "Strapi crée et maintient automatiquement le schéma. À chaque requête API, il génère les requêtes SQL nécessaires et retourne les résultats au frontend.",
+          "Base de données relationnelle stockant toutes les informations du blog.",
+        how:
+          "Strapi interroge la base pour lire et écrire les données.",
+        importance:
+          "Stockage persistant : sans base de données, aucune donnée n’existe.",
       },
+
       {
         name: "Tailwind CSS",
         role: "Styles",
         color: "#06B6D4",
         description:
-          "Framework CSS utilitaire qui permet de styler les composants directement dans le JSX avec des classes prédéfinies. Il génère uniquement le CSS utilisé, ce qui donne des feuilles de style très légères.",
-        how: "Chaque composant Next.js utilise des classes Tailwind pour définir ses styles. Tout est co-localisé avec le markup, sans fichier CSS séparé.",
+          "Framework CSS utilitaire pour construire rapidement une interface moderne.",
+        how:
+          "Utilisé directement dans les composants React via des classes.",
+        importance:
+          "Améliore l’expérience utilisateur et la rapidité de développement UI.",
       },
+
       {
         name: "PWA",
-        role: "Expérience mobile",
+        role: "Application installable",
         color: "#F59E0B",
         description:
-          "Progressive Web App : manifeste, service worker et icônes qui permettent d'installer le site comme une application native sur Android, iOS et desktop.",
-        how: "Next.js génère le manifeste et les icônes automatiquement. Un service worker intercepte les requêtes réseau et permet un fonctionnement hors ligne basique.",
+          "Permet d’installer le site comme une application native sur mobile ou desktop.",
+        how:
+          "Manifeste + service worker pour cache et offline.",
+        importance:
+          "Transforme le site web en application mobile accessible hors navigateur.",
       },
+
       {
         name: "TypeScript",
         role: "Langage",
         color: "#3178C6",
         description:
-          "Superset de JavaScript qui ajoute un typage statique. Il détecte les erreurs à la compilation, documente le code et offre une autocomplétion précise dans l'éditeur.",
-        how: "Les types des données Strapi sont définis dans lib/strapi.ts et utilisés dans toutes les pages pour garantir la cohérence des données.",
+          "Ajoute un typage statique à JavaScript pour améliorer la fiabilité du code.",
+        how:
+          "Utilisé dans tout le projet pour typer les données et composants.",
+        importance:
+          "Réduit les bugs et améliore la maintenabilité du projet.",
       },
     ],
   },
-]
+];
