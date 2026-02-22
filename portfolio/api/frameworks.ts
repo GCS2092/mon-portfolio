@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { neon } from '@neondatabase/serverless'
 
 const KV_KEY = 'portfolio:frameworks:v1'
-const sql = neon(process.env.DATABASE_URL as string)
+const sql = neon(process.env.DATABASE_URL!)
 
 function unauthorized(res: VercelResponse) {
   res.status(401).json({ error: 'unauthorized' })
@@ -15,8 +15,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return
     }
 
-    const rows = await sql<{ value: unknown }[]>`SELECT value FROM app_kv WHERE key = ${KV_KEY} LIMIT 1;`
-    const data = rows?.[0]?.value ?? null
+    // ✅ PAS DE <T>
+    const rows = await sql`
+      SELECT value FROM app_kv WHERE key = ${KV_KEY} LIMIT 1;
+    ` as { value: unknown }[]
+
+    const data = rows[0]?.value ?? null
     res.status(200).json({ frameworks: data })
     return
   }
@@ -34,7 +38,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const auth = req.headers.authorization
-    const token = auth?.startsWith('Bearer ') ? auth.slice('Bearer '.length) : null
+    const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null
+
     if (!token || token !== expected) {
       unauthorized(res)
       return
