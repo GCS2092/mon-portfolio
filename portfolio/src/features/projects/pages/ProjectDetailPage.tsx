@@ -10,7 +10,7 @@ import {
   getTechHow,
   getTechRole,
 } from '../i18n'
-
+ 
 function getStatusDotClasses(status: string) {
   const s = status.trim().toLowerCase()
   const isProd = /production|prod\b|live|en ligne/.test(s)

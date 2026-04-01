@@ -51,7 +51,7 @@ export default function ProjectArchitecturePage() {
       </div>
     )
   }
-
+ 
   return (
     <div className="min-h-screen bg-[#FAF9F7]">
       <section className="pt-32 pb-16 max-w-5xl mx-auto px-6">
