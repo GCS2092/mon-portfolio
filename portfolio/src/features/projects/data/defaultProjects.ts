@@ -349,7 +349,7 @@ export const defaultProjects: Project[] = [
       'Resend',
       'PWA',
     ],
-    link: '',
+    link: 'https://wenddtransport.com',
     year: 'Mars 2026',
     status: 'En développement',
     architecture: {
