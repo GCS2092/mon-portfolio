@@ -44,11 +44,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return
     }
 
-    const body = req.body as unknown
+    const rawBody = req.body as unknown
+    let projectsPayload: unknown
+    try {
+      projectsPayload = typeof rawBody === 'string' ? JSON.parse(rawBody) : rawBody
+    } catch {
+      res.status(400).json({ error: 'invalid_json_body' })
+      return
+    }
+
+    if (!Array.isArray(projectsPayload)) {
+      res.status(400).json({ error: 'projects_must_be_an_array' })
+      return
+    }
+
+    const jsonPayload = JSON.stringify(projectsPayload)
 
     await sql`
       INSERT INTO app_kv (key, value, updated_at)
-      VALUES (${KV_KEY}, ${body}::jsonb, now())
+      VALUES (${KV_KEY}, ${jsonPayload}::jsonb, now())
       ON CONFLICT (key)
       DO UPDATE SET value = EXCLUDED.value, updated_at = now();
     `
